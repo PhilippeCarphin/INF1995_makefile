@@ -19,6 +19,7 @@ MISC_FLAGS=-fpack-struct -fshort-enums -funsigned-bitfields -funsigned-char
 CFLAGS=-MMD $(INC) -g -mmcu=$(MCU) -O$(OPTLEVEL) $(WARNING_FLAGS) $(MISC_FLAGS)
 CXXFLAGS=-fno-exceptions
 
+LD=avr-gcc
 LIBS=
 LDFLAGS=-Wl,-Map,$(TRG).map -mmcu=$(MCU)
 TRG=$(PROJECTNAME).out
@@ -39,7 +40,7 @@ AVRDUDE_PROGRAMMERID=usbasp
 all: $(TRG)
 
 $(TRG): $(OBJDEPS)
-	$(CC) $(LDFLAGS) -o $(TRG) $(OBJDEPS) -lm $(LIBS)
+	$(LD) $(LDFLAGS) -o $(TRG) $(OBJDEPS) -lm $(LIBS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<
