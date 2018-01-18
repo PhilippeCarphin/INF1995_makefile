@@ -25,8 +25,7 @@ TRG=$(PROJECTNAME).out
 
 CFILES=$(filter %.c, $(PRJSRC))
 CPPFILES=$(filter %.cpp, $(PRJSRC))
-OBJDEPS=$(CFILES:.c=.o) \
-	$(CPPFILES:.cpp=.o)
+OBJDEPS=$(CFILES:.c=.o) $(CPPFILES:.cpp=.o)
 
 OBJCOPY=avr-objcopy
 HEXFORMAT=ihex
@@ -40,8 +39,7 @@ AVRDUDE_PROGRAMMERID=usbasp
 all: $(TRG)
 
 $(TRG): $(OBJDEPS)
-	$(CC) $(LDFLAGS) -o $(TRG) $(OBJDEPS) \
-	-lm $(LIBS)
+	$(CC) $(LDFLAGS) -o $(TRG) $(OBJDEPS) -lm $(LIBS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<
@@ -52,12 +50,10 @@ $(TRG): $(OBJDEPS)
 -include *.d
 
 %.hex: %.out
-	$(OBJCOPY) -j .text -j .data \
-		-O $(HEXFORMAT) $< $@
+	$(OBJCOPY) -j .text -j .data -O $(HEXFORMAT) $< $@
 
 install: $(HEXROMTRG)
-	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID)   \
-	-p $(MCU) -P -e -U flash:w:$(HEXROMTRG)
+	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID) -p $(MCU) -P -e -U flash:w:$(HEXROMTRG)
 
 clean:
 	$(RM) $(TRG) $(TRG).map $(OBJDEPS) $(HEXTRG) *.d
