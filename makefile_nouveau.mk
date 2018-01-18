@@ -9,10 +9,10 @@
 ##################################################
 PROJECTNAME=test
 PRJSRC=$(wildcard *.cpp)
+MCU=atmega324pa
 
 CC=avr-gcc
 INC=-I.
-MCU=atmega324pa
 OPTLEVEL=s
 WARNING_FLAGS=-Wall
 MISC_FLAGS=-fpack-struct -fshort-enums -funsigned-bitfields -funsigned-char
