@@ -9,7 +9,6 @@
 ##################################################
 PROJECTNAME=test
 PRJSRC=$(wildcard *.cpp)
-REMOVE=rm -f
 
 CC=avr-gcc
 INC=-I.
@@ -61,6 +60,6 @@ install: $(HEXROMTRG)
 	-p $(MCU) -P -e -U flash:w:$(HEXROMTRG)
 
 clean:
-	$(REMOVE) $(TRG) $(TRG).map $(OBJDEPS) $(HEXTRG) *.d
+	$(RM) $(TRG) $(TRG).map $(OBJDEPS) $(HEXTRG) *.d
 
 #####                    EOF                   #####
