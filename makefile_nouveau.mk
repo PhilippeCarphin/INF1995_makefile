@@ -7,8 +7,12 @@
 #####         Inspire de Pat Deegan -        #####
 #####  Psychogenic Inc (www.psychogenic.com) #####
 ##################################################
+src_dir = src
+build_dir = build
+inc_dir = include
+
 PROJECTNAME=test
-PRJSRC=$(wildcard *.cpp)
+PRJSRC=$(wildcard $(src_dir)/*.cpp)
 MCU=atmega324pa
 
 ################################# Outils #######################################
@@ -20,13 +24,13 @@ AVRDUDE=avrdude
 ############################### Fichiers #######################################
 CFILES=$(filter %.c, $(PRJSRC))
 CPPFILES=$(filter %.cpp, $(PRJSRC))
-OBJDEPS=$(CFILES:.c=.o) $(CPPFILES:.cpp=.o)
+OBJDEPS=$(subst $(src_dir),$(build_dir),$(CFILES:.c=.o) $(CPPFILES:.cpp=.o))
 
-TRG=$(PROJECTNAME).out
-HEXROMTRG=$(PROJECTNAME).hex
+TRG=$(build_dir)/$(PROJECTNAME).out
+HEXROMTRG=$(build_dir)/$(PROJECTNAME).hex
 
 ######################### Variables pour la compilation ########################
-INC=-I.
+INC=-I. -I$(inc_dir)
 OPTLEVEL=s
 WARNING_FLAGS=-Wall
 MISC_FLAGS=-fpack-struct -fshort-enums -funsigned-bitfields -funsigned-char
@@ -49,11 +53,11 @@ all: $(TRG)
 $(TRG): $(OBJDEPS)
 	$(LD) $(LDFLAGS) -o $(TRG) $(OBJDEPS) -lm $(LIBS)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $<
+$(build_dir)/%.o: $(src_dir)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-%.o: %.cpp
-	$(CC) $(CFLAGS) $(CXXFLAGS) -c $<
+$(build_dir)/%.o: $(src_dir)/%.cpp
+	$(CC) $(CFLAGS) $(CXXFLAGS) -c $< -o $@
 
 -include *.d
 
@@ -64,6 +68,9 @@ install: $(HEXROMTRG)
 	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID) -p $(MCU) -P -e -U flash:w:$(HEXROMTRG)
 
 clean:
-	$(RM) $(TRG) $(TRG).map $(OBJDEPS) *.d
+	$(RM) $(TRG) $(TRG).map $(build_dir)/*.o $(build_dir)/*.d
+
+vars:
+	@echo "OBJDEPS = $(OBJDEPS)"
 
 #####                    EOF                   #####
