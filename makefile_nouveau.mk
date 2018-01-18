@@ -12,13 +12,12 @@ PRJSRC=$(wildcard *.cpp)
 REMOVE=rm -f
 
 CC=avr-gcc
-INC=
+INC=-I.
 MCU=atmega324pa
 OPTLEVEL=s
-CFLAGS=-I. -MMD $(INC) -g -mmcu=$(MCU) -O$(OPTLEVEL) \
-	-fpack-struct -fshort-enums             \
-	-funsigned-bitfields -funsigned-char    \
-	-Wall
+WARNING_FLAGS=-Wall
+MISC_FLAGS=-fpack-struct -fshort-enums -funsigned-bitfields -funsigned-char
+CFLAGS=-MMD $(INC) -g -mmcu=$(MCU) -O$(OPTLEVEL) $(WARNING_FLAGS) $(MISC_FLAGS)
 CXXFLAGS=-fno-exceptions
 
 LIBS=
