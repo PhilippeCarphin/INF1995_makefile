@@ -7,23 +7,25 @@
 #####         Inspire de Pat Deegan -        #####
 #####  Psychogenic Inc (www.psychogenic.com) #####
 ##################################################
-MCU=atmega324pa
 PROJECTNAME=test
 PRJSRC=$(wildcard *.cpp)
-INC=
 LIBS=
-OPTLEVEL=s
 AVRDUDE_PROGRAMMERID=usbasp
-CC=avr-gcc
 OBJCOPY=avr-objcopy
 AVRDUDE=avrdude
 REMOVE=rm -f
 HEXFORMAT=ihex
+
+CC=avr-gcc
+INC=
+MCU=atmega324pa
+OPTLEVEL=s
 CFLAGS=-I. -MMD $(INC) -g -mmcu=$(MCU) -O$(OPTLEVEL) \
 	-fpack-struct -fshort-enums             \
 	-funsigned-bitfields -funsigned-char    \
 	-Wall
 CXXFLAGS=-fno-exceptions
+
 LDFLAGS=-Wl,-Map,$(TRG).map -mmcu=$(MCU)
 TRG=$(PROJECTNAME).out
 HEXROMTRG=$(PROJECTNAME).hex
