@@ -35,7 +35,6 @@ OBJDEPS=$(CFILES:.c=.o) $(CPPFILES:.cpp=.o)
 OBJCOPY=avr-objcopy
 HEXFORMAT=ihex
 HEXROMTRG=$(PROJECTNAME).hex
-HEXTRG=$(HEXROMTRG) $(PROJECTNAME).ee.hex
 
 ########################### Settings pour make install #########################
 AVRDUDE=avrdude
@@ -62,6 +61,6 @@ install: $(HEXROMTRG)
 	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID) -p $(MCU) -P -e -U flash:w:$(HEXROMTRG)
 
 clean:
-	$(RM) $(TRG) $(TRG).map $(OBJDEPS) $(HEXTRG) *.d
+	$(RM) $(TRG) $(TRG).map $(OBJDEPS) *.d
 
 #####                    EOF                   #####
