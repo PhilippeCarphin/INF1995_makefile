@@ -9,12 +9,7 @@
 ##################################################
 PROJECTNAME=test
 PRJSRC=$(wildcard *.cpp)
-LIBS=
-AVRDUDE_PROGRAMMERID=usbasp
-OBJCOPY=avr-objcopy
-AVRDUDE=avrdude
 REMOVE=rm -f
-HEXFORMAT=ihex
 
 CC=avr-gcc
 INC=
@@ -26,14 +21,23 @@ CFLAGS=-I. -MMD $(INC) -g -mmcu=$(MCU) -O$(OPTLEVEL) \
 	-Wall
 CXXFLAGS=-fno-exceptions
 
+LIBS=
 LDFLAGS=-Wl,-Map,$(TRG).map -mmcu=$(MCU)
 TRG=$(PROJECTNAME).out
-HEXROMTRG=$(PROJECTNAME).hex
-HEXTRG=$(HEXROMTRG) $(PROJECTNAME).ee.hex
+
 CFILES=$(filter %.c, $(PRJSRC))
 CPPFILES=$(filter %.cpp, $(PRJSRC))
 OBJDEPS=$(CFILES:.c=.o) \
 	$(CPPFILES:.cpp=.o)
+
+OBJCOPY=avr-objcopy
+HEXFORMAT=ihex
+HEXROMTRG=$(PROJECTNAME).hex
+HEXTRG=$(HEXROMTRG) $(PROJECTNAME).ee.hex
+
+AVRDUDE=avrdude
+AVRDUDE_PROGRAMMERID=usbasp
+
 .PHONY: all install clean
 all: $(TRG)
 
