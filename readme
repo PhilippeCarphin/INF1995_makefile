@@ -1,0 +1,46 @@
+Compilation de code C++ pour un microcontrolleur:
+
+Idée générale:
+==============
+
+Le projet commence par la création d'un exécutable à partir de fichiers sources
+de la façon normale mais en utilisant avr-gcc et en spécifiant le
+microcontroleur pour lequel il devra créer les fichiers .o, suivi d'une étape de
+linking qui prend les .o et crée l'exécutable.
+
+Cet exécutable est traduit en un autre format par avr-objcopy pour créer un
+fichier .hex
+
+Finalement, avrdude upload le code sur le microcontrolleur
+
+Schématiquement:
+================
+
+
+{ fichiers *.cpp et *.c }  (variable SRC dans le makefile)
+
+	|
+	|  avr-gcc -c $< -mmcu=atmega324pa
+	V     pour chaque fichier .cpp
+
+{ fichiers *.o }  (variable OBJ dans le makefile)
+
+	|  avr-gcc -o fichier.out $(OBJ)
+	|
+	V
+
+   fichier .out  (variable EXEC dans le makefile)
+
+	|  avr-objcopy ... $(EXEC) $(HEXROMTRG)
+	|
+	V
+
+   fichier .hex  (variable HEXROMTRG dans le makefile)
+
+	|  avr-dude ... flash:w:$(HEXROMTRG)
+	|
+	V
+
+   fichier .hex
+      sur le
+  microcontrolleur
